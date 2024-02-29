@@ -308,4 +308,17 @@ color: #070808;
     font-size: 18px;
     width: 100px;
   }
+
+  .category {
+    margin-left: 100px;
+    width: 200px;
+  }
+  .pagination {
+    text-align: center;
+  }
+  
+  .pagination a.active {
+    background-color: dodgerblue;
+    color: white;
+  }
   

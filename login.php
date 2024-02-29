@@ -45,7 +45,7 @@ $totalQty = $cart->getTotalQtyByUserId();
         <label class="logo">Electronic Shop</label>
         <ul>
             <li><a href="index.php">Trang chủ</a></li>
-            <li><a href="#">Sản phẩm</a></li>
+            <li><a href="productList.php">Sản phẩm</a></li>
 
             <li><a href="#" id="order">Đơn hàng</a></li>
             <li>
@@ -112,7 +112,7 @@ $totalQty = $cart->getTotalQtyByUserId();
                 <a href="./">Trang Chủ</a>
             </li>
             <li>
-                <a href="#">Sản Phẩm</a>
+                <a href="productList.php">Sản Phẩm</a>
             </li>
         </ul>
     </footer>
