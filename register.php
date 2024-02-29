@@ -1,13 +1,22 @@
 <?php
+include 'classes/user.php';
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $user = new user();
+    $result = $user->insert($_POST);
+    if ($result == true) {
+        $userId = $user->getLastUserId(); 
+        echo '<script>alert("' . $result . '")</script>';
+    }
+}
+?>
+
+<?php
 include_once 'lib/session.php';
 include_once 'classes/product.php';
 include_once 'classes/cart.php';
 
 $cart = new cart();
 $totalQty = $cart->getTotalQtyByUserId();
-
-$product = new product();
-$list = mysqli_fetch_all($product->getFeaturedProducts(), MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +30,7 @@ $list = mysqli_fetch_all($product->getFeaturedProducts(), MYSQLI_ASSOC);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://use.fontawesome.com/2145adbb48.js"></script>
     <script src="https://kit.fontawesome.com/a42aeb5b72.js" crossorigin="anonymous"></script>
-    <title>Trang chủ</title>
+    <title>Đăng ký</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script>
         $(function() {
@@ -60,7 +69,7 @@ $list = mysqli_fetch_all($product->getFeaturedProducts(), MYSQLI_ASSOC);
             <?php } ?>
         </ul>
     </nav>
-    <section class="banner">
+        <section class="banner">
         <div class="fadein">
             <?php
             // display images from directory
@@ -77,43 +86,34 @@ $list = mysqli_fetch_all($product->getFeaturedProducts(), MYSQLI_ASSOC);
         </div>
     </section>
     <div class="featuredProducts">
-        <h1>Tất cả sản phẩm</h1>
+        <h1>Đăng ký</h1>
     </div>
-    <div class="container" style="grid-template-columns: auto auto auto auto;">
-        <?php
-        foreach ($list as $key => $value) { ?>
-            <div class="card">
-                <div class="imgBx">
-                    <a href="detail.php?id=<?= $value['id'] ?>"><img src="admin/uploads/<?= $value['image'] ?>" alt="" title="<?= $value['name'] ?>"></a>
-                </div>
-                <div class="content">
-                    <div class="productName">
-                        <a href="detail.php?id=<?= $value['id'] ?>" title="<?= $value['name'] ?>">
-                            <h3><?= $value['name'] ?></h3>
-                        </a>
-                    </div>
-                    <div>
-                        Đã bán: <?= $value['soldCount'] ?>
-                    </div>
-                    <div class="original-price">
-                        <?php
-                        if ($value['promotionPrice'] < $value['originalPrice']) { ?>
-                            Giá gốc: <del><?= number_format($value['originalPrice'], 0, '', ',') ?>VND</del>
-                        <?php } else { ?>
-                            <p>.</p>
-                        <?php } ?>
-                    </div>
-                    <div class="price">
-                        Giá bán: <?= number_format($value['promotionPrice'], 0, '', ',') ?>VND
-                    </div>
-                    <div class="action">
-                        <a class="add-cart" href="add_cart.php?id=<?= $value['id'] ?>">Thêm vào giỏ</a>
-                        <a class="detail" href="detail.php?id=<?= $value['id'] ?>">Xem chi tiết</a>
-                    </div>
-                </div>
-            </div>
-        <?php }
-        ?>
+    <div class="container-single">
+        <div class="login">
+            <form action="register.php" method="post" class="form-login">
+                <label for="fullName">Họ tên</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Họ tên..." required>
+
+                <label for="email">Email</label>
+                <p class="error"><?= !empty($result) ? $result : '' ?></p>
+                <input type="email" id="email" name="email" placeholder="Email..." required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+
+                <label for="password">Mật khẩu</label>
+                <input type="password" id="password" name="password" placeholder="Mật khẩu..." required>
+
+                <label for="repassword">Nhập lại mật khẩu</label>
+                <input type="password" id="repassword" name="repassword" required placeholder="Nhập lại mật khẩu..." oninput="check(this)">
+
+                <label for="address">Địa chỉ</label>
+                <textarea name="address" id="address" cols="30" rows="5" required></textarea>
+
+                <label for="dob">Ngày sinh</label>
+                <input type="date" name="dob" id="dob" required>
+
+                <input type="submit" value="Đăng ký" name="submit">
+            </form>
+        </div>
+    </div>
     </div>
     <footer>
         <div class="social">
@@ -131,5 +131,13 @@ $list = mysqli_fetch_all($product->getFeaturedProducts(), MYSQLI_ASSOC);
         </ul>
     </footer>
 </body>
-
+<script language='javascript' type='text/javascript'>
+    function check(input) {
+        if (input.value != document.getElementById('password').value) {
+            input.setCustomValidity('Password Must be Matching.');
+        }else{
+            input.setCustomValidity('');
+        }
+    }
+</script>
 </html>

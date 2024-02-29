@@ -259,3 +259,53 @@ color: #070808;
 .list {
     background-color: ghostwhite;
   }
+  .container-single {
+    display: flex;
+    margin: 30px 100px;
+  }
+  .login {
+    margin: 10px auto;
+    width: 40%;
+  }
+  
+  input[type=text],
+  input[type=password],
+  input[type=email],
+  input[type=number],
+  textarea,
+  select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  input[type=submit] {
+    width: 100%;
+    background-color: var(--color-primary);
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  */ .success {
+    color: green;
+  }
+  
+  .error {
+    color: red;
+  }
+  
+  del {
+    text-decoration: line-through;
+  }
+  
+  input[type=number] {
+    font-size: 18px;
+    width: 100px;
+  }
+  
