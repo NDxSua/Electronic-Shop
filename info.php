@@ -1,19 +1,11 @@
 <?php
-include 'classes/user.php';
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user = new user();
-    $result = $user->insert($_POST);
-    if ($result == true) {
-        $userId = $user->getLastUserId(); 
-        echo '<script>alert("' . $result . '")</script>';
-    }
-}
-?>
-
-<?php
 include_once 'lib/session.php';
 include_once 'classes/product.php';
 include_once 'classes/cart.php';
+include 'classes/user.php';
+
+$user = new user();
+$userInfo = $user->get();
 
 $cart = new cart();
 $totalQty = $cart->getTotalQtyByUserId();
@@ -30,7 +22,31 @@ $totalQty = $cart->getTotalQtyByUserId();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://use.fontawesome.com/2145adbb48.js"></script>
     <script src="https://kit.fontawesome.com/a42aeb5b72.js" crossorigin="anonymous"></script>
-    <title>Đăng ký</title>
+    <title>Trang chủ</title>
+    <style>
+        table,
+        tr,
+        td {
+            border: none;
+            /* background-color: #fff; */
+            margin: 0;
+            padding: 0;
+            text-align: left;
+            font-size: 18px;
+        }
+
+        td {
+            margin: 10px;
+            padding: 10px;
+        }
+
+        .container-info {
+            width: 60%;
+            display: flex;
+            justify-content: center;
+            flex: 1;
+        }
+    </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script>
         $(function() {
@@ -44,11 +60,11 @@ $totalQty = $cart->getTotalQtyByUserId();
 
 <body>
     <nav>
-        <label class="logo">Electronic Shop</label>
+        <label class="logo">HKT-SHOP.com</label>
         <ul>
-            <li><a href="index.php" class="active">Trang chủ</a></li>
+            <li><a href="index.php">Trang chủ</a></li>
             <li><a href="productList.php">Sản phẩm</a></li>
-            
+
             <li><a href="#" id="order">Đơn hàng</a></li>
             <li>
                 <a href="#">
@@ -61,7 +77,7 @@ $totalQty = $cart->getTotalQtyByUserId();
             </li>
             <?php
             if (isset($_SESSION['user']) && $_SESSION['user']) { ?>
-                <li><a href="info.php" id="signin">Thông tin cá nhân</a></li>
+                <li><a href="info.php" id="signin" class="active">Thông tin cá nhân</a></li>
                 <li><a href="logout.php" id="signin">Đăng xuất</a></li>
             <?php } else { ?>
                 <li><a href="register.php" id="signup">Đăng ký</a></li>
@@ -69,7 +85,7 @@ $totalQty = $cart->getTotalQtyByUserId();
             <?php } ?>
         </ul>
     </nav>
-        <section class="banner">
+    <section class="banner">
         <div class="fadein">
             <?php
             // display images from directory
@@ -86,34 +102,43 @@ $totalQty = $cart->getTotalQtyByUserId();
         </div>
     </section>
     <div class="featuredProducts">
-        <h1>Đăng ký</h1>
+        <h1>Thông tin cá nhân</h1>
     </div>
     <div class="container-single">
-        <div class="login">
-            <form action="register.php" method="post" class="form-login">
-                <label for="fullName">Họ tên</label>
-                <input type="text" id="fullName" name="fullName" placeholder="Họ tên..." required>
-
-                <label for="email">Email</label>
-                <p class="error"><?= !empty($result) ? $result : '' ?></p>
-                <input type="email" id="email" name="email" placeholder="Email..." required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
-
-                <label for="password">Mật khẩu</label>
-                <input type="password" id="password" name="password" placeholder="Mật khẩu..." required>
-
-                <label for="repassword">Nhập lại mật khẩu</label>
-                <input type="password" id="repassword" name="repassword" required placeholder="Nhập lại mật khẩu..." oninput="check(this)">
-
-                <label for="address">Địa chỉ</label>
-                <textarea name="address" id="address" cols="30" rows="5" required></textarea>
-
-                <label for="dob">Ngày sinh</label>
-                <input type="date" name="dob" id="dob" required>
-
-                <input type="submit" value="Đăng ký" name="submit">
-            </form>
+        <div class="container-info">
+            <div class="image-info">
+                <img src="./images/avt.png" alt="">
+            </div>
+            <div class="info">
+                <table>
+                    <tr>
+                        <td>Họ và tên: </td>
+                        <td><?= $userInfo['fullname'] ?></td>
+                    </tr>
+                    <tr>
+                        <td>Email: </td>
+                        <td><?= $userInfo['email'] ?></td>
+                    </tr>
+                    <tr>
+                        <td>Ngày sinh: </td>
+                        <td><?= $userInfo['dob'] ?></td>
+                    </tr>
+                    <tr>
+                        <td>Địa chỉ: </td>
+                        <td><?= $userInfo['address'] ?></td>
+                    </tr>
+                    <tr>
+                        <td>Chức vụ: </td>
+                        <td><?php if ($userInfo['role_id'] == 1) {
+                                echo "Admin";
+                            } else echo "Khách hàng" ?></td>
+                    </tr>
+                </table>
+                <?php if ($userInfo['role_id'] == 1) {
+                    echo '<div><a href="./admin/index.php">Chuyển sang trang Admin</a></div>';
+                } else echo '<div><a href="edit_info.php">Chỉnh sửa thông tin cá nhân</a></div>'; ?>
+            </div>
         </div>
-    </div>
     </div>
     <footer>
         <div class="social">
@@ -129,15 +154,8 @@ $totalQty = $cart->getTotalQtyByUserId();
                 <a href="productList.php">Sản Phẩm</a>
             </li>
         </ul>
+        <p class="copyright">copy by HKT-SHOP.com 2023</p>
     </footer>
 </body>
-<script language='javascript' type='text/javascript'>
-    function check(input) {
-        if (input.value != document.getElementById('password').value) {
-            input.setCustomValidity('Password Must be Matching.');
-        }else{
-            input.setCustomValidity('');
-        }
-    }
-</script>
+
 </html>

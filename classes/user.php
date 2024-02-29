@@ -76,4 +76,16 @@ class user
 			return $alert;
 		}
 	}
+
+	public function get()
+	{
+		$userId = Session::get('userId');
+		$query = "SELECT * FROM users WHERE id = '$userId' LIMIT 1";
+		$mysqli_result = $this->db->select($query);
+		if ($mysqli_result) {
+			$result = mysqli_fetch_all($this->db->select($query), MYSQLI_ASSOC)[0];
+			return $result;
+		}
+		return false;
+	}
 }
