@@ -48,4 +48,32 @@ class user
 		}
 		return false;
 	}
+
+    public function login($email, $password)
+	{
+		$query = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
+		$result = $this->db->select($query);
+		if ($result) {
+			$value = $result->fetch_assoc();
+			if ($value['status'] == 0 ) {
+				$alert = "Tài khoản bạn đang bị khóa hoặc chưa được xác nhận. Vui lòng liên hệ với ADMIN để được xử lý!";
+				return $alert;
+			} else {
+				Session::set('user', true);
+				Session::set('userId', $value['id']);
+				Session::set('role_id', $value['role_id']);
+				if($value['role_id'] == 1)
+				{
+					header("Location: ./admin/productlist.php");
+				}
+				else
+				{
+					header("Location:index.php");
+				}
+			}
+		} else {
+			$alert = "Tên đăng nhập hoặc mật khẩu không đúng!";
+			return $alert;
+		}
+	}
 }

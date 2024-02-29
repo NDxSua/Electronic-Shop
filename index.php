@@ -53,10 +53,10 @@ $list = mysqli_fetch_all($product->getFeaturedProducts(), MYSQLI_ASSOC);
             <?php
             if (isset($_SESSION['user']) && $_SESSION['user']) { ?>
                 <li><a href="#" id="signin">Thông tin cá nhân</a></li>
-                <li><a href="#" id="signin">Đăng xuất</a></li>
+                <li><a href="logout.php" id="signin">Đăng xuất</a></li>
             <?php } else { ?>
                 <li><a href="register.php" id="signup">Đăng ký</a></li>
-                <li><a href="#" id="signin">Đăng nhập</a></li>
+                <li><a href="login.php" id="signin">Đăng nhập</a></li>
             <?php } ?>
         </ul>
     </nav>

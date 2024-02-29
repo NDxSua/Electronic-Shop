@@ -1,12 +1,10 @@
 <?php
 include 'classes/user.php';
+$user = new user();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user = new user();
-    $result = $user->insert($_POST);
-    if ($result == true) {
-        $userId = $user->getLastUserId(); 
-        echo '<script>alert("' . $result . '")</script>';
-    }
+    $email = $_POST['email'];
+    $password = md5($_POST['password']);
+    $login_check = $user->login($email, $password);
 }
 ?>
 
@@ -30,7 +28,7 @@ $totalQty = $cart->getTotalQtyByUserId();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://use.fontawesome.com/2145adbb48.js"></script>
     <script src="https://kit.fontawesome.com/a42aeb5b72.js" crossorigin="anonymous"></script>
-    <title>Đăng ký</title>
+    <title>Đăng nhập</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script>
         $(function() {
@@ -46,9 +44,9 @@ $totalQty = $cart->getTotalQtyByUserId();
     <nav>
         <label class="logo">Electronic Shop</label>
         <ul>
-            <li><a href="index.php" class="active">Trang chủ</a></li>
+            <li><a href="index.php">Trang chủ</a></li>
             <li><a href="#">Sản phẩm</a></li>
-            
+
             <li><a href="#" id="order">Đơn hàng</a></li>
             <li>
                 <a href="#">
@@ -65,7 +63,7 @@ $totalQty = $cart->getTotalQtyByUserId();
                 <li><a href="logout.php" id="signin">Đăng xuất</a></li>
             <?php } else { ?>
                 <li><a href="register.php" id="signup">Đăng ký</a></li>
-                <li><a href="login.php" id="signin">Đăng nhập</a></li>
+                <li><a href="login.php" id="signin" class="active">Đăng nhập</a></li>
             <?php } ?>
         </ul>
     </nav>
@@ -86,31 +84,19 @@ $totalQty = $cart->getTotalQtyByUserId();
         </div>
     </section>
     <div class="featuredProducts">
-        <h1>Đăng ký</h1>
+        <h1>Đăng nhập</h1>
     </div>
     <div class="container-single">
         <div class="login">
-            <form action="register.php" method="post" class="form-login">
-                <label for="fullName">Họ tên</label>
-                <input type="text" id="fullName" name="fullName" placeholder="Họ tên..." required>
-
+            <form action="login.php" method="post" class="form-login">
                 <label for="email">Email</label>
-                <p class="error"><?= !empty($result) ? $result : '' ?></p>
-                <input type="email" id="email" name="email" placeholder="Email..." required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                <input type="email" id="email" name="email" placeholder="Email..." required>
 
                 <label for="password">Mật khẩu</label>
                 <input type="password" id="password" name="password" placeholder="Mật khẩu..." required>
+                <p style="color: red;"><?= !empty($login_check) ? $login_check : '' ?></p>
 
-                <label for="repassword">Nhập lại mật khẩu</label>
-                <input type="password" id="repassword" name="repassword" required placeholder="Nhập lại mật khẩu..." oninput="check(this)">
-
-                <label for="address">Địa chỉ</label>
-                <textarea name="address" id="address" cols="30" rows="5" required></textarea>
-
-                <label for="dob">Ngày sinh</label>
-                <input type="date" name="dob" id="dob" required>
-
-                <input type="submit" value="Đăng ký" name="submit">
+                <input type="submit" value="Đăng nhập">
             </form>
         </div>
     </div>
@@ -131,13 +117,5 @@ $totalQty = $cart->getTotalQtyByUserId();
         </ul>
     </footer>
 </body>
-<script language='javascript' type='text/javascript'>
-    function check(input) {
-        if (input.value != document.getElementById('password').value) {
-            input.setCustomValidity('Password Must be Matching.');
-        }else{
-            input.setCustomValidity('');
-        }
-    }
-</script>
+
 </html>
