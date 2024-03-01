@@ -141,4 +141,101 @@ class product
         }
         return false;
     }
+
+    public function insert($data)
+    {
+        $name = $data['name'];
+        $originalPrice = $data['originalPrice'];
+        $promotionPrice = $data['promotionPrice'];
+        $cateId = $data['cateId'];
+        $des = $data['des'];
+        $qty = $data['qty'];
+
+        // Check image and move to upload folder
+        $file_name = $_FILES['image']['name'];
+        $file_temp = $_FILES['image']['tmp_name'];
+
+        $div = explode('.', $file_name);
+        $file_ext = strtolower(end($div));
+        $unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
+        $uploaded_image = "uploads/" . $unique_image;
+
+        move_uploaded_file($file_temp, $uploaded_image);
+        $query = "INSERT INTO products VALUES (NULL,'$name','$originalPrice','$promotionPrice','$unique_image'," . Session::get('userId') . ",'" . date('Y/m/d') . "','$cateId','$qty','$des',1,0) ";
+        $result = $this->db->insert($query);
+        if ($result) {
+            $alert = "<span class='success'>Sản phẩm đã được thêm thành công</span>";
+            return $alert;
+        } else {
+            $alert = "<span class='error'>Thêm sản phẩm thất bại</span>";
+            return $alert;
+        }
+    }
+
+    public function update($data)
+    {
+        $name = $data['name'];
+        $originalPrice = $data['originalPrice'];
+        $promotionPrice = $data['promotionPrice'];
+        $cateId = $data['cateId'];
+        $des = $data['des'];
+        $qty = $data['qty'];
+
+        $file_name = $_FILES['image']['name'];
+        $file_temp = $_FILES['image']['tmp_name'];
+
+        $div = explode('.', $file_name);
+        $file_ext = strtolower(end($div));
+        $unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
+        $uploaded_image = "uploads/" . $unique_image;
+
+        //If user has chooose new image
+        if (!empty($file_name)) {
+            move_uploaded_file($file_temp, $uploaded_image);
+            $query = "UPDATE products SET 
+					name ='$name',
+					cateId = '$cateId',
+					originalPrice = '$originalPrice',
+					promotionPrice = '$promotionPrice',
+					des = '$des',
+					qty = '$qty',
+					image = '$unique_image'
+					 WHERE id = " . $data['id'] . " ";
+        } else {
+            $query = "UPDATE products SET 
+					name ='$name',
+					cateId = '$cateId',
+					originalPrice = '$originalPrice',
+					promotionPrice = '$promotionPrice',
+					des = '$des',
+					qty = '$qty'
+					 WHERE id = " . $data['id'] . " ";
+        }
+        $result = $this->db->update($query);
+        if ($result) {
+            $alert = "<span class='success'>Cập nhật sản phẩm thành công</span>";
+            return $alert;
+        } else {
+            $alert = "<span class='error'>Cập nhật sản phẩm thất bại</span>";
+            return $alert;
+        }
+    }
+
+    public function getProductbyIdAdmin($id)
+    {
+        $query = "SELECT * FROM products where id = '$id'";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function delete($id)
+    {
+        $query = "DELETE FROM products WHERE id = $id";
+        $row = $this->db->delete($query);
+        if ($row) {
+            return true;
+        }
+        return false;
+    }
+
 }
