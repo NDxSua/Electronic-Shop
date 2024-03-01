@@ -47,7 +47,7 @@ $categoriesList = $categories->getAll();
 
             <li><a href="#" id="order">Đơn hàng</a></li>
             <li>
-                <a href="#">
+                <a href="checkout.php">
                     Giỏ hàng
                     <i class="fa fa-shopping-bag"></i>
                     <sup class="sumItem">

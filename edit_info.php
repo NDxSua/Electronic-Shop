@@ -49,14 +49,14 @@ $totalQty = $cart->getTotalQtyByUserId();
 
 <body>
     <nav>
-        <label class="logo">HKT-SHOP.com</label>
+        <label class="logo">Electronic Shop</label>
         <ul>
             <li><a href="index.php">Trang chủ</a></li>
             <li><a href="productList.php">Sản phẩm</a></li>
 
             <li><a href="#" id="order">Đơn hàng</a></li>
             <li>
-                <a href="#">
+                <a href="checkout.php">
                     Giỏ hàng
                     <i class="fa fa-shopping-bag"></i>
                     <sup class="sumItem">
@@ -138,7 +138,6 @@ $totalQty = $cart->getTotalQtyByUserId();
                 <a href="productList.php">Sản Phẩm</a>
             </li>
         </ul>
-        <p class="copyright">copy by HKT-SHOP.com 2023</p>
     </footer>
 </body>
 <script language='javascript' type='text/javascript'>
