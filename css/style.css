@@ -321,4 +321,31 @@ color: #070808;
     background-color: dodgerblue;
     color: white;
   }
+
+  .order {
+    width: 100%;
+    background-color: ghostwhite;
+    padding: 10px;
+    border-collapse: collapse;
+  }
+
+  .orderinfo {
+    margin-left: 20px;
+    background-color: ghostwhite;
+    padding: 10px;
+  }
   
+  th {
+    background-color: gainsboro;
+    border: 1px solid cadetblue;
+  }
+  
+  td {
+    border: 1px solid cadetblue;
+    text-align: center;
+  }
+
+  .image-cart {
+    height: 200px;
+    width: 200px;
+  }

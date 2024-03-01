@@ -54,4 +54,42 @@ class cart
         }
         return false;
     }
+
+    public function add($productId)
+    {
+        $userId = Session::get('userId');
+
+        $query = "SELECT * FROM products WHERE id = '$productId' ";
+        $result = $this->db->select($query)->fetch_assoc();
+        $productName = $result["name"];
+        $productPrice = $result["promotionPrice"];
+        $image = $result["image"];
+        $checkcart = "SELECT qty FROM cart WHERE productId = '$productId' AND userId = '$userId' ";
+        $check_cart = $this->db->select($checkcart);
+        if ($check_cart) {
+            //Check qty product in db
+            $qtyInCart = mysqli_fetch_row($check_cart)[0];
+            $product = new product();
+            $productCheck = $product->getProductbyId($productId);
+            if (intval($qtyInCart) >= intval($productCheck['qty'])) {
+                return 'out of stock';
+            }
+
+            $query_insert = "UPDATE cart SET qty = qty + 1 WHERE productId = $productId AND userId = $userId";
+            $insert_cart = $this->db->update($query_insert);
+            if ($insert_cart) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            $query_insert = "INSERT INTO cart VALUES(NULL,'$userId','$productId',1,'$productName','$productPrice','$image' )";
+            $insert_cart = $this->db->insert($query_insert);
+            if ($insert_cart) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }
