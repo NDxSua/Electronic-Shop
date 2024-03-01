@@ -31,4 +31,52 @@ class order
         }
         return false;
     }
+
+    public function add()
+    {
+        $userId = Session::get('userId');
+        //Add new order
+        $sql_insert_cart = "INSERT INTO orders VALUES(NULL,'$userId','" . date('y/m/d') . "',NULL,'Processing' )";
+        $insert_cart = $this->db->insert($sql_insert_cart);
+        if (!$insert_cart) {
+            return false;
+        }
+
+        //Get cart list by userId
+        $cart = new cart();
+        $cart_user = $cart->get();
+
+        //Get last orderid
+        $sql_get_cart_last_id = "SELECT id FROM orders ORDER BY id DESC LIMIT 1";
+        $get_cart_last_id = $this->db->select($sql_get_cart_last_id);
+        if ($get_cart_last_id) {
+            $orderId = mysqli_fetch_row($get_cart_last_id)[0];
+        }
+
+        //Update product qty
+        $product = new product();
+        foreach ($cart_user as $key => $value) {
+            //Add item cart to order detail
+            $sql_insert_order_details = "INSERT INTO order_details VALUES(NULL,'$orderId'," . $value['productId'] . "," . $value['qty'] . "," . $value['productPrice'] . ",'" . $value['productName'] . "','" . $value['productImage'] . "')";
+            $insert_order_details = $this->db->insert($sql_insert_order_details);
+            if (!$insert_order_details) {
+                return false;
+            }
+
+            $product->updateQty($value['productId'], $value['qty']);
+            if (!$product) {
+                return false;
+            }
+        }
+
+        //Delete cart
+        $sql_delete_cart = "DELETE FROM cart WHERE userId = $userId";
+        $delete_cart = $this->db->delete($sql_delete_cart);
+        if ($delete_cart) {
+            return true;
+        }
+
+        return false;
+    }
+
 }
