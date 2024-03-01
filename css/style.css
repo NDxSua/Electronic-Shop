@@ -349,3 +349,7 @@ color: #070808;
     height: 200px;
     width: 200px;
   }
+
+  .info {
+    padding-left: 20px;
+  }
