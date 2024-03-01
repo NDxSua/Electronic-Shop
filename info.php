@@ -135,7 +135,7 @@ $totalQty = $cart->getTotalQtyByUserId();
                     </tr>
                 </table>
                 <?php if ($userInfo['role_id'] == 1) {
-                    echo '<div><a href="./admin/index.php">Chuyển sang trang Admin</a></div>';
+                    echo '<div><a href="./admin/productlist.php">Chuyển sang trang Admin</a></div>';
                 } else echo '<div><a href="edit_info.php">Chỉnh sửa thông tin cá nhân</a></div>'; ?>
             </div>
         </div>
