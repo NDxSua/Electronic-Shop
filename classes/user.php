@@ -88,4 +88,19 @@ class user
 		}
 		return false;
 	}
+
+	public function update($data)
+	{
+		$userId = Session::get('userId');
+		$fullName = $data['fullName'];
+		$email = $data['email'];
+		$dob = $data['dob'];
+		$address = $data['address'];
+		$password = md5($data['password']);
+
+		$query = "UPDATE users SET email = '$email', fullname = '$fullName', dob = '$dob', password = '$password', address = '$address' WHERE id = '$userId' ";
+		$result = $this->db->update($query);
+		return $result;
+	}
+
 }
