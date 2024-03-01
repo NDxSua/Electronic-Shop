@@ -92,4 +92,15 @@ class cart
             }
         }
     }
+
+    public function delete($cartId)
+    {
+        $userId = Session::get('userId');
+        $query = "DELETE FROM cart WHERE userId = '$userId' AND id = $cartId";
+        $row = $this->db->delete($query);
+        if ($row) {
+            return true;
+        }
+        return false;
+    }
 }
