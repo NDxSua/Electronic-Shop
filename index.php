@@ -40,7 +40,7 @@ $list = mysqli_fetch_all($product->getFeaturedProducts(), MYSQLI_ASSOC);
             <li><a href="index.php" class="active">Trang chủ</a></li>
             <li><a href="productList.php">Sản phẩm</a></li>
             
-            <li><a href="#" id="order">Đơn hàng</a></li>
+            <li><a href="order.php" id="order">Đơn hàng</a></li>
             <li>
                 <a href="checkout.php">
                     Giỏ hàng

@@ -1,16 +1,15 @@
 <?php
-include 'classes/product.php';
+include_once 'lib/session.php';
+Session::checkSession('client');
+include 'classes/order.php';
 include_once 'classes/cart.php';
 
 $cart = new cart();
 $totalQty = $cart->getTotalQtyByUserId();
 
-$product = new product();
-$result = $product->getProductbyId($_GET['id']);
-if (!$result) {
-    echo 'Không tìm thấy sản phẩm!';
-    die();
-}
+$order = new order();
+$result = $order->getOrderByUser();
+
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +23,7 @@ if (!$result) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://use.fontawesome.com/2145adbb48.js"></script>
     <script src="https://kit.fontawesome.com/a42aeb5b72.js" crossorigin="anonymous"></script>
-    <title><?= $result['name'] ?></title>
+    <title>Order</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script>
         $(function() {
@@ -43,7 +42,7 @@ if (!$result) {
             <li><a href="index.php">Trang chủ</a></li>
             <li><a href="productList.php">Sản phẩm</a></li>
 
-            <li><a href="order.php" id="order">Đơn hàng</a></li>
+            <li><a href="order.php" id="order" class="active">Đơn hàng</a></li>
             <li>
                 <a href="checkout.php">
                     Giỏ hàng
@@ -63,7 +62,7 @@ if (!$result) {
             <?php } ?>
         </ul>
     </nav>
-        <section class="banner">
+    <section class="banner">
         <div class="fadein">
             <?php
             // display images from directory
@@ -80,34 +79,51 @@ if (!$result) {
         </div>
     </section>
     <div class="featuredProducts">
-        <h1>Sản phẩm</h1>
+        <h1>Đơn hàng</h1>
     </div>
     <div class="container-single">
-        <div class="image-product">
-            <img src="admin/uploads/<?= $result['image'] ?>" alt="">
-        </div>
-        <div class="info">
-            <div class="name">
-                <h2><?= $result['name'] ?></h2>
-            </div>
-            <div class="price-single">
-                Giá bán: <b><?= number_format($result['promotionPrice'], 0, '', ',') ?>VND</b>
-            </div>
-            <?php
-            if ($result['promotionPrice'] < $result['originalPrice']) { ?>
-                <div>
-                    Gía gốc: <del><?= number_format($result['originalPrice'], 0, '', ',') ?>VND</del>
-                </div>
-            <?php }
-            ?>
-            <div class="des">
-                <p>Đã bán: <?= $result['soldCount'] ?></p>
-                <?= $result['des'] ?>
-            </div>
-            <div class="add-cart-single">
-                <a href="add_cart.php?id=<?= $result['id'] ?>">Thêm vào giỏ</a>
-            </div>
-        </div>
+        <?php if ($result) { ?>
+            <table class="order">
+                <tr>
+                    <th>STT</th>
+                    <th>Mã đơn hàng</th>
+                    <th>Ngày đặt</th>
+                    <th>Ngày giao</th>
+                    <th>Tình trạng</th>
+                    <th>Thao tác</th>
+                </tr>
+                <?php $count = 1;
+                foreach ($result as $key => $value) { ?>
+                    <tr>
+                        <td><?= $count++ ?></td>
+                        <td><?= $value['id'] ?></td>
+                        <td><?= $value['createdDate'] ?></td>
+                        <td><?= ($value['status'] != "Processing") ? $value['receivedDate'] : "Dự kiến 3 ngày sau khi đơn hàng đã được xử lý" ?> <?= ($value['status'] != "Complete" && $value['status'] != "Processing") ? "(Dự kiến)" : "" ?> </td>
+                        <?php
+                        if ($value['status'] == 'Delivering') { ?>
+                            <td>
+                                <a href="complete_order.php?orderId=<?= $value['id'] ?>">Đang giao (Click vào để xác nhận đã nhận)</a>
+                            </td>
+                            <td>
+                                <a href="orderdetail.php?orderId=<?= $value['id'] ?>">Chi tiết</a>
+                            </td>
+                        <?php } else { ?>
+                            <td>
+                                <?= $value['status'] ?>
+                            </td>
+                            <td>
+                                <a href="orderdetail.php?orderId=<?= $value['id'] ?>">Chi tiết</a>
+                            </td>
+                        <?php }
+                        ?>
+                    </tr>
+                <?php } ?>
+            </table>
+        <?php } else { ?>
+            <h3>Đơn hàng hiện đang rỗng</h3>
+        <?php } ?>
+
+
     </div>
     </div>
     <footer>

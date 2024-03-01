@@ -65,7 +65,7 @@ $totalQty = $cart->getTotalQtyByUserId();
             <li><a href="index.php">Trang chủ</a></li>
             <li><a href="productList.php">Sản phẩm</a></li>
 
-            <li><a href="#" id="order">Đơn hàng</a></li>
+            <li><a href="order.php" id="order">Đơn hàng</a></li>
             <li>
                 <a href="checkout.php">
                     Giỏ hàng
