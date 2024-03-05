@@ -104,4 +104,15 @@ class categories
         $result = $this->db->select($query);
         return $result;
     }
+
+    public function delete($id)
+    {
+        $query = "DELETE FROM categories WHERE id = $id";
+        $row = $this->db->delete($query);
+        if ($row) {
+            return true;
+        }
+        return false;
+    }
+
 }
