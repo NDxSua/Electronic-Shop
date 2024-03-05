@@ -84,4 +84,24 @@ class categories
             return $alert;
         }
     }
+
+    public function update($data)
+    {
+        $query = "UPDATE categories SET name = '".$data['name']."' WHERE id = '".$data['id']."'";
+        $result = $this->db->update($query);
+        if ($result) {
+            $alert = "<span class='success'>Cập nhật danh mục thành công</span>";
+            return $alert;
+        } else {
+            $alert = "<span class='error'>Cập nhật danh mục thất bại</span>";
+            return $alert;
+        }
+    }
+
+    public function getByIdAdmin($id)
+    {
+        $query = "SELECT * FROM categories where id = '$id'";
+        $result = $this->db->select($query);
+        return $result;
+    }
 }
