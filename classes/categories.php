@@ -71,4 +71,17 @@ class categories
             return false;
         }
     }
+
+    public function insert($name)
+    {
+        $query = "INSERT INTO categories VALUES (NULL,'" . $name . "',1) ";
+        $result = $this->db->insert($query);
+        if ($result) {
+            $alert = "<span class='success'>Thêm danh mục thành công</span>";
+            return $alert;
+        } else {
+            $alert = "<span class='error'>Thêm danh mục thất bại</span>";
+            return $alert;
+        }
+    }
 }
