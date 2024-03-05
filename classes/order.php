@@ -143,4 +143,36 @@ class order
         }
         return false;
     }
+
+    function updateReceivedDateOrder($id)
+    {
+        $query = "UPDATE orders SET receivedDate = '" . Date('y/m/d', strtotime('+3 days')) . "' WHERE id = $id";
+        $mysqli_result = $this->db->update($query);
+        if ($mysqli_result) {
+            return true;
+        }
+        return false;
+    }
+
+    public function processedOrder($id)
+    {
+        $query = "UPDATE orders SET status = 'Processed' WHERE id = $id";
+        $mysqli_result = $this->db->update($query);
+        if ($mysqli_result) {
+            if ($this->updateReceivedDateOrder($id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function deliveringOrder($id)
+    {
+        $query = "UPDATE orders SET status = 'Delivering' WHERE id = $id";
+        $mysqli_result = $this->db->update($query);
+        if ($mysqli_result) {
+            return true;
+        }
+        return false;
+    }
 }
