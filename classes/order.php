@@ -79,4 +79,48 @@ class order
         return false;
     }
 
+    public function getProcessingOrder()
+    {
+        $query = "SELECT * FROM orders WHERE status = 'Processing'";
+        $mysqli_result = $this->db->select($query);
+        if ($mysqli_result) {
+            $result = mysqli_fetch_all($this->db->select($query), MYSQLI_ASSOC);
+            return $result;
+        }
+        return false;
+    }
+
+    public function getProcessedOrder()
+    {
+        $query = "SELECT * FROM orders WHERE status = 'Processed'";
+        $mysqli_result = $this->db->select($query);
+        if ($mysqli_result) {
+            $result = mysqli_fetch_all($this->db->select($query), MYSQLI_ASSOC);
+            return $result;
+        }
+        return false;
+    }
+
+    public function getDeliveringOrder()
+    {
+        $query = "SELECT * FROM orders WHERE status = 'Delivering'";
+        $mysqli_result = $this->db->select($query);
+        if ($mysqli_result) {
+            $result = mysqli_fetch_all($this->db->select($query), MYSQLI_ASSOC);
+            return $result;
+        }
+        return false;
+    }
+
+    public function getCompleteOrder()
+    {
+        $query = "SELECT * FROM orders WHERE status = 'Complete'";
+        $mysqli_result = $this->db->select($query);
+        if ($mysqli_result) {
+            $result = mysqli_fetch_all($this->db->select($query), MYSQLI_ASSOC);
+            return $result;
+        }
+        return false;
+    }
+
 }
