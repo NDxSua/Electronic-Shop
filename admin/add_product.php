@@ -44,6 +44,7 @@ $categoriesList = $category->getAll();
             <li><a href="categoriesList.php" >Quản lý danh mục</a></li>
             <li><a href="orderlist.php">Quản lý Đơn hàng</a></li>
             <li><a href="userlist.php">Quản lý Người dùng</a></li>
+            <li><a href="../logout.php">Đăng xuất</a></li>
         </ul>
     </nav>
     <div class="title">

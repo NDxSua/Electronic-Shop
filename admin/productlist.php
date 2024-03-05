@@ -69,7 +69,7 @@ if (isset($_GET['search'])) {
         <label class="logo">ADMIN</label>
         <ul>
             <li><a href="productlist.php" class="active">Quản lý Sản phẩm</a></li>
-            <li><a href="#">Quản lý Danh mục</a></li>
+            <li><a href="categoriesList.php">Quản lý Danh mục</a></li>
             <li><a href="#">Quản lý Đơn hàng</a></li>
             <li><a href="#">Quản lý Người dùng</a></li>
             <li><a href="../logout.php">Đăng xuất</a></li>
